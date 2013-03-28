@@ -6,6 +6,16 @@
     <servlet-class>edu.udel.tpic.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>helloSOAPServerServlet</servlet-name>
+    <servlet-class>edu.udel.tpic.server.soap.HelloSOAPServerServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>helloSOAPServerServlet</servlet-name>
+    <url-pattern>/hellosoapserver</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/transactionprocessingincloud/greet</url-pattern>
