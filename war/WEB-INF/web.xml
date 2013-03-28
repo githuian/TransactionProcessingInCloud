@@ -6,10 +6,22 @@
     <servlet-class>edu.udel.tpic.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+  
+  
+    <servlet>
+    <servlet-name>productOperation</servlet-name>
+    <servlet-class>edu.udel.tpic.server.soap.EntitySOAPServlet</servlet-class>
+  </servlet>
+  
   <servlet>
     <servlet-name>helloSOAPServerServlet</servlet-name>
     <servlet-class>edu.udel.tpic.server.soap.HelloSOAPServerServlet</servlet-class>
   </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>productOperation</servlet-name>
+    <url-pattern>/product</url-pattern>
+  </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>helloSOAPServerServlet</servlet-name>

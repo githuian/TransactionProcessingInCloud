@@ -1,0 +1,2 @@
+serviceClass: edu.udel.tpic.client.GreetingService
+path: 7D8685DA8BED3CCF2D5D9F3FBEFE5A67.gwt.rpc
