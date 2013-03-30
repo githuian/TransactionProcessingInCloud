@@ -1,4 +1,4 @@
-package edu.udel.tpic.server.soap;
+package edu.udel.tpic.server.model;
 
 
 
@@ -10,6 +10,9 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+
+import edu.udel.tpic.server.Util;
+import edu.udel.tpic.server.dao.EntityDAO;
 
 
 /**
@@ -46,7 +49,7 @@ public class Item {
         item.setProperty("price", price);
       }           
     }
-    Util.persistEntity(item);
+    EntityDAO.persistEntity(item);
     return item;
   }
 
@@ -58,7 +61,7 @@ public class Item {
    * @return all the items
    */
   public static Iterable<Entity> getAllItems(String kind) {
-  	Iterable<Entity> entities = Util.listEntities(kind, null, null);
+  	Iterable<Entity> entities = EntityDAO.listEntities(kind, null, null);
   	return entities;
   }
 
@@ -70,7 +73,7 @@ public class Item {
    * @return Item Entity
    */
   public static Iterable<Entity> getItem(String itemName) {
-  	Iterable<Entity> entities = Util.listEntities("Item", "name", itemName);
+  	Iterable<Entity> entities = EntityDAO.listEntities("Item", "name", itemName);
   	return entities;
   }
 
@@ -85,7 +88,7 @@ public class Item {
    */
   public static Iterable<Entity> getItemsForProduct(String kind, String productName) {
     Key ancestorKey = KeyFactory.createKey("Product", productName);
-    return Util.listChildren("Item", ancestorKey);
+    return EntityDAO.listChildren("Item", ancestorKey);
   }
 
   /**
@@ -96,7 +99,7 @@ public class Item {
   public static Entity getSingleItem(String itemName) {
     Query query = new Query("Item");
     query.addFilter("name", FilterOperator.EQUAL, itemName);
-    List<Entity> results = Util.getDatastoreServiceInstance().prepare(query).asList(FetchOptions.Builder.withDefaults());
+    List<Entity> results = EntityDAO.getDatastoreServiceInstance().prepare(query).asList(FetchOptions.Builder.withDefaults());
     if (!results.isEmpty()) {
       return (Entity)results.remove(0);
     }
@@ -106,7 +109,7 @@ public class Item {
   public static String deleteItem(String itemKey) {
     Entity entity = getSingleItem(itemKey);    
     if(entity != null){
-      Util.deleteEntity(entity.getKey());
+    	EntityDAO.deleteEntity(entity.getKey());
       return("Item deleted successfully.");
     }
     else

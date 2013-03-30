@@ -6,10 +6,18 @@
     <servlet-class>edu.udel.tpic.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+	<servlet>
+		<servlet-name>ItemServlet</servlet-name>
+		<servlet-class> edu.udel.tpic.server.ItemServlet</servlet-class>
+	</servlet>
   
+  	<servlet>
+		<servlet-name>ProductServlet</servlet-name>
+		<servlet-class> edu.udel.tpic.server.ProductServlet</servlet-class>
+	</servlet>
   
     <servlet>
-    <servlet-name>productOperation</servlet-name>
+    <servlet-name>entiryOperation</servlet-name>
     <servlet-class>edu.udel.tpic.server.soap.EntitySOAPServlet</servlet-class>
   </servlet>
   
@@ -18,9 +26,19 @@
     <servlet-class>edu.udel.tpic.server.soap.HelloSOAPServerServlet</servlet-class>
   </servlet>
   
+  <servlet-mapping>
+		<servlet-name>ProductServlet</servlet-name>
+		<url-pattern>/product</url-pattern>
+	</servlet-mapping>
+  
+    <servlet-mapping>
+		<servlet-name>ItemServlet</servlet-name>
+		<url-pattern>/item</url-pattern>
+	</servlet-mapping>
+  
    <servlet-mapping>
-    <servlet-name>productOperation</servlet-name>
-    <url-pattern>/product</url-pattern>
+    <servlet-name>entiryOperation</servlet-name>
+    <url-pattern>/entity</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
@@ -35,6 +53,7 @@
   
   <!-- Default page to serve -->
   <welcome-file-list>
+  <welcome-file>index.html</welcome-file>
     <welcome-file>TransactionProcessingInCloud.html</welcome-file>
   </welcome-file-list>
 

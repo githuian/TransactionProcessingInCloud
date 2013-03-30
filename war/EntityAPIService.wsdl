@@ -184,7 +184,7 @@
   </binding>
   <service name="EntityAPIService">
     <port name="EntityAPIPort" binding="tns:EntityAPIPortBinding">
-      <soap:address location="http://udeljpmc.appspot.com/product"/>
+      <soap:address location="http://udeljpmc.appspot.com/entity"/>
     </port>
   </service>
 </definitions>

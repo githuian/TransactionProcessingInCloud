@@ -26,6 +26,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.google.appengine.api.datastore.Entity;
 
+import edu.udel.tpic.server.Util;
+import edu.udel.tpic.server.model.Item;
+import edu.udel.tpic.server.model.Product;
+
 @WebService
 public class EntityAPI {	
 	private static final Logger logger = Logger.getLogger(EntityAPI.class.getCanonicalName());

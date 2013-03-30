@@ -1,10 +1,12 @@
-package edu.udel.tpic.server.soap;
+package edu.udel.tpic.server.model;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import edu.udel.tpic.server.dao.EntityDAO;
+
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ public class Product {
   	} else {
   	  product.setProperty("description", description);
   	}
-  	Util.persistEntity(product);
+  	EntityDAO.persistEntity(product);
   	return product;
   }
 
@@ -38,7 +40,7 @@ public class Product {
    * @return  products
    */
   public static Iterable<Entity> getAllProducts(String kind) {
-    return Util.listEntities(kind, null, null);
+    return EntityDAO.listEntities(kind, null, null);
   }
 
   /**
@@ -48,7 +50,7 @@ public class Product {
    */
   public static Entity getProduct(String name) {
   	Key key = KeyFactory.createKey("Product",name);
-  	return Util.findEntity(key);
+  	return EntityDAO.findEntity(key);
   }
 
   /**
@@ -62,7 +64,7 @@ public class Product {
   	Key parentKey = KeyFactory.createKey("Product", name);
   	query.setAncestor(parentKey);
   	query.addFilter(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.GREATER_THAN, parentKey);
-  	List<Entity> results = Util.getDatastoreServiceInstance().prepare(query).asList(FetchOptions.Builder.withDefaults());
+  	List<Entity> results = EntityDAO.getDatastoreServiceInstance().prepare(query).asList(FetchOptions.Builder.withDefaults());
   	return results;
   }
   
@@ -78,7 +80,7 @@ public class Product {
     if (!items.isEmpty()){
       return "Cannot delete, as there are items associated with this product.";	      
     }	    
-    Util.deleteEntity(key);
+    EntityDAO.deleteEntity(key);
     return "Product deleted successfully";
   }
 }
