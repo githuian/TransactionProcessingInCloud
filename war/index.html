@@ -28,37 +28,12 @@
   </div>
   <!-- home page content -->
   <div class="g-unit" id="home-tab">
-  <h2>Create Flow Chart</h2>
-    <p>
-      <div align="left">
-        <img src="images/codeLab1Create.png" />
-      </div>
-      
-        <ol>
-          <li>Product/Item servlet will be invoked on clicking <b>Save</b>
-            from UI</li>
-          <li>doPut() method of respective servlet will
-            invoke <b>datastore API</b> to persist the data
-            into datastore</li>          
-        </ol>
-      </p>
-      
-    <h2>List Flow Chart</h2>
-     <p>
-      <div align="left">
-        <img src="images/codeLab1List.png" />
-      </div>
-     
-        <ol>
-          <li>Tab selection from UI invokes doGet() of the
-            respective servlet</li>          
-          <li>JSON objects are returned to the UI and
-            custom JSON converter will parse the JSON
-            objects</li>
-        </ol>
-      </p>
+  <form action="javascript:login()" method="post">
+Username: <input name="emailLogin" type="text" id="emailLogin" value=""/><br>
+Password: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
+<input type="submit" name="Submit" value="Login"/> <input type="reset" name="Reset" value="Reset"/>
+</form>
   </div>  
-  
   
    <!-- ******************************************* product ******************************************* -->
   <div class="g-unit" id="product-tab">
