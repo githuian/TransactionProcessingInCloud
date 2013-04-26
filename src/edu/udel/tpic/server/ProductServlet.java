@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Entity;
 import edu.udel.tpic.server.model.Product;
+import edu.udel.tpic.server.util.JsonUtil;
 
 /**
  * This servlet responds to the request corresponding to product entities. The servlet
@@ -52,13 +53,13 @@ public class ProductServlet extends BaseServlet {
     Iterable<Entity> entities = null;
     if (searchFor == null || searchFor.equals("") || searchFor == "*") {
       entities = Product.getAllProducts("Product");
-      out.println(Util.writeJSON(entities));
+      out.println(JsonUtil.writeJSON(entities));
     } else {
       Entity product = Product.getProduct(searchFor);
       if (product != null) {
         Set<Entity> result = new HashSet<Entity>();
         result.add(product);
-        out.println(Util.writeJSON(result));
+        out.println(JsonUtil.writeJSON(result));
       }
     }
   }
@@ -76,7 +77,7 @@ public class ProductServlet extends BaseServlet {
     try {
       Product.createOrUpdateProduct(category, description);
     } catch (Exception e) {
-      String msg = Util.getErrorMessage(e);
+      String msg = JsonUtil.getErrorMessage(e);
       out.print(msg);
     }
   }
@@ -91,7 +92,7 @@ public class ProductServlet extends BaseServlet {
     try{    	
     	out.println(Product.deleteProduct(productkey));
     } catch(Exception e) {
-    	out.println(Util.getErrorMessage(e));
+    	out.println(JsonUtil.getErrorMessage(e));
     }    
   }
 

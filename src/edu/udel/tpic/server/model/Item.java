@@ -11,8 +11,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
-import edu.udel.tpic.server.Util;
 import edu.udel.tpic.server.dao.EntityDAO;
+import edu.udel.tpic.server.util.JsonUtil;
 
 
 /**

@@ -26,9 +26,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.google.appengine.api.datastore.Entity;
 
-import edu.udel.tpic.server.Util;
 import edu.udel.tpic.server.model.Item;
 import edu.udel.tpic.server.model.Product;
+import edu.udel.tpic.server.util.JsonUtil;
 
 @WebService
 public class EntityAPI {	
@@ -69,7 +69,7 @@ public class EntityAPI {
   public String getAllProducts(String kind){
     Iterable<Entity> entities = null;    
     entities = Product.getAllProducts(kind);    
-    return Util.writeJSON(entities);
+    return JsonUtil.writeJSON(entities);
   }
   
   @WebMethod
@@ -78,7 +78,7 @@ public class EntityAPI {
     if (product != null) {
       Set<Entity> resultSet = new HashSet<Entity>();
       resultSet.add(product); 
-      return Util.writeJSON(resultSet);
+      return JsonUtil.writeJSON(resultSet);
     }
     return null;
   }
@@ -87,20 +87,20 @@ public class EntityAPI {
   public String getAllItems(String kind){
     Iterable<Entity> entities = null;    
     entities = Item.getAllItems(kind);    
-    return Util.writeJSON(entities); 
+    return JsonUtil.writeJSON(entities); 
   }
   
   @WebMethod
   public String getItem(String name){
     Iterable<Entity> entities = null;    
     entities = Item.getItem(name);    
-    return Util.writeJSON(entities); 
+    return JsonUtil.writeJSON(entities); 
   }
   
   @WebMethod
   public String getItemsForProduct(String kind,String product){
     Iterable<Entity> entities = null;    
     entities = Item.getItemsForProduct(kind,product);    
-    return Util.writeJSON(entities); 
+    return JsonUtil.writeJSON(entities); 
   } 
 }

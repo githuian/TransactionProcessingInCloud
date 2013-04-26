@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Entity;
 import edu.udel.tpic.server.model.*;
+import edu.udel.tpic.server.util.JsonUtil;
 /**
 * This servlet responds to the request corresponding to items. The class
 * creates and manages the ItemEntity
@@ -49,13 +50,13 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp)
  PrintWriter out = resp.getWriter();
  if (searchFor == null || searchFor.equals("")) {
    Iterable<Entity> entities = Item.getAllItems("all");
-   out.println(Util.writeJSON(entities));
+   out.println(JsonUtil.writeJSON(entities));
  } else if (searchBy == null || searchBy.equals("name")) {
    Iterable<Entity> entities = Item.getItem(searchFor);
-   out.println(Util.writeJSON(entities));
+   out.println(JsonUtil.writeJSON(entities));
  } else if (searchBy != null && searchBy.equals("product")) {
    Iterable<Entity> entities = Item.getItemsForProduct("Item", searchFor);
-   out.println(Util.writeJSON(entities));
+   out.println(JsonUtil.writeJSON(entities));
  }
 }
 
@@ -83,7 +84,7 @@ protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
  try{      
    out.println(Item.deleteItem(itemKey));
  } catch(Exception e) {
-   out.println(Util.getErrorMessage(e));
+   out.println(JsonUtil.getErrorMessage(e));
  }      
 }
 

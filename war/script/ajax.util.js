@@ -26,6 +26,8 @@ var showTab = function(entity) {
 	showHideCreate(entity, false);
 	if(entity!=HOME)
 		$('#'+entity+'-search-reset').click();
+	if(entity == "balance") showAccounts();
+	
 }
 
 //function to show/hide create block for an entity in a tab 

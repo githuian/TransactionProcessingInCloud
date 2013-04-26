@@ -1,4 +1,4 @@
-package edu.udel.tpic.server;
+package edu.udel.tpic.server.util;
 
 /**
  * Copyright 2011 Google
@@ -43,9 +43,9 @@ import edu.udel.tpic.server.dao.EntityDAO;
  * displaying the entity in JSON format.
  * 
  */
-public class Util {
+public class JsonUtil {
 
-  private static final Logger logger = Logger.getLogger(Util.class.getCanonicalName());
+  private static final Logger logger = Logger.getLogger(JsonUtil.class.getCanonicalName());
  
 
 	/**
