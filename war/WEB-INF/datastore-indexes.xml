@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes
+  autoGenerate="true">
+    <datastore-index kind="Log" ancestor="false">
+        <property name="accountNumber" direction="asc" />
+        <property name="transactiontime" direction="desc" />
+        <property name="action" direction="asc" />
+    </datastore-index>
+</datastore-indexes>

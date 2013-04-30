@@ -9,8 +9,7 @@
  <link href= "css/style.css" rel="stylesheet" type="text/css" />
  <link href= "css/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
   <script language="javascript" src='script/jquery-1.8.js'></script>
- <!--  <script language="javascript" src='script/ajax.util.js'></script> -->
-  <script language="javascript" src='script/ajax.tpic.js'></script>
+  <script language="javascript" src='script/ajax.admin.js'></script>
     <script language="javascript" src='script/jquery-ui-1.10.2.custom.min.js'></script>
 
 </head>
@@ -21,33 +20,36 @@ String userName = "";
 if(session.getAttribute("username") != null)
 {
 	userName = (String) session.getAttribute("username");
+	if(!"admin".equalsIgnoreCase(userName))
+		session.invalidate();
+	else
     fullName = session.getAttribute("firstname") +" " + session.getAttribute("lastname");
 }
 %>
 <body>
-<input type="text" value="<%=userName%>" id="session-username" hidden name="session-username" />
   <!-- content -->  
   <div  id="gc-pagecontent" >
- <div><div> <h1 class="page_title">The Bank on the Cloud(Ordinary user)</h1></div><div id ="logout" style="float:right">
+ <div><div> <h1 class="page_title">The Bank on the Cloud (Administration user)</h1></div><div id ="logout" style="float:right">
  <%
-if(session.getAttribute("username") != null){
+if(session.getAttribute("username")!=null&&""!=session.getAttribute("username")){
+
 out.println("<a href='#' onClick='logout();'>Logout</a>");
 }
  %></div></div>
  <!-- tabs --> 
  <div id="tabs" class="gtb">
       <a id="home" href="#home" class="tab">Home</a>	   
-	  <a id="balance" href="#balance" class="tab controltab">Balance</a> 
-	  <a id="deposit" href="#deposit" class="tab controltab">Deposit</a>	
-	   <a id="debit" href="#debit" class="tab controltab">Debit</a>	  
-	   <a id="transaction" href="#transaction" class="tab controltab">Transaction Log</a>	      
+	  <a id="createuser" href="#createuser" class="tab controltab">Create User</a> 
+	  <a id="deleteuser" href="deleteuser" class="tab controltab">Delete User</a>	
+	   <a id="createaccount" href="#createaccount" class="tab controltab">Create Account</a>	  
+	   <a id="deleteaccount" href="#deleteaccount" class="tab controltab">Delete Account</a>	      
 	  <div class="gtbc"></div>
   </div>
   
   <!-- home page content -->
   <div class="g-unit" id="home-tab">
   <div id="login-div">
-  <p>Welcome to the Bank on the Cloud!</p>
+  <p>Welcome to the Administration system on the Cloud!</p>
   <p>Please Login!</p> 
  <form name="loginform" method="post" id="loginform">
 UserName: <input name="userLogin" type="text" id="userLogin" value=""/><br>
@@ -56,14 +58,14 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 <input type="reset" name="Reset" value="Reset"/>
 </form>
 </div>
-  <div id="loginmessage"><b>Welcome <%=fullName%></b></div>
+  <div id="loginmessage"></div>
    </div>  
 
   
    <!-- ******************************************* product ******************************************* -->
   <div class="g-unit" id="balance-tab">
   	<!-- balance container --> 
-	  	<h2>Check Balance</h2>
+	  	<h2>Create User</h2>
 	  	<form name="balance-query-form" id="balance-query-form">
 	  	<table width="200" cellspacing="0" cellpadding="0">
 	  	<tbody>
@@ -92,7 +94,7 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
   
    <!-- ******************************************* item ******************************************* -->
   <div class="g-unit" id="deposit-tab">
-	  	<h2>Deposit</h2>
+	  	<h2>Delete User</h2>
 	  	<form name="deposit-form" id="deposit-form">
 	  	<table width="200" cellspacing="0" cellpadding="0">
 	  	<tbody>
@@ -121,7 +123,7 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 
  
  <div class="g-unit" id="debit-tab">
-     	<h2>Deposit</h2>
+     	<h2>Create Account</h2>
 	  	<form name="debit-form" id="debit-form">
 	  	<table width="200" cellspacing="0" cellpadding="0">
 	  	<tbody>
@@ -151,7 +153,7 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 	   <!-- search container -->
 	   	<div class="gsc-search-box" id="log-search-form">
 	   	<!-- section title -->
-	   	<h2>Transaction Logs</h2>
+	   	<h2>Delete Account</h2>
 	   	<form name="transaction-search-form" id="transaction-search-form">
 	   	  <select class="select-list"  id="transaction-accounts-list" name="transaction-accounts-list"></select>
 	   	  <select id="actiontype-list" name="actiontype-list">

@@ -1,0 +1,236 @@
+package edu.udel.tpic.server;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query;
+import edu.udel.tpic.server.dao.EntityDAO;
+import edu.udel.tpic.server.model.BankAccount;
+import edu.udel.tpic.server.model.Customer;
+import edu.udel.tpic.server.model.TransactionLog;
+import edu.udel.tpic.server.util.JsonUtil;
+
+/**
+ * This servlet responds to the request corresponding to product entities. The
+ * servlet manages the Product Entity
+ * 
+ * 
+ */
+@SuppressWarnings("serial")
+public class BankAccountServlet extends HttpServlet {
+
+	private static final Logger logger = Logger.getLogger(ProductServlet.class
+			.getCanonicalName());
+
+	/**
+	 * Get the entities in JSON format.
+	 */
+
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doPost(req, resp);
+	}
+
+	/**
+	 * Create the entity and persist it.
+	 */
+	protected void doCreate(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		logger.log(Level.INFO, "Creating Product");
+		PrintWriter out = resp.getWriter();
+		if (req.getParameter("accountnumber") != null
+				& req.getParameter("initbalance") != null) {
+			String accountNumber = req.getParameter("accountnumber");
+			double initBalance = Double.parseDouble(req
+					.getParameter("initbalance"));
+			if (accountNumber.length() != 16) {
+				out.println("AccountNumber must be 16 digits");
+				return;
+			}
+			if (req.getSession().getAttribute("username") != null) {
+				String userName = (String) req.getSession().getAttribute(
+						"username");
+				if ("admin".equalsIgnoreCase(userName))
+					userName = req.getParameter("username");
+				try {
+					if (BankAccount.createAccount(userName, accountNumber,
+							initBalance))
+						out.println("true:success");
+					else out.println("false:repeatedAccount");
+				} catch (Exception e) 
+				{
+					out.print("false:exception");
+				}
+			} else
+				out.println("false:session timeout");
+		} else{
+			out.println("false:Please check your parameters");
+		}
+	}
+
+	protected void doUpdate(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		if (req.getParameter("property") != null
+				&& req.getParameter("accountnumber") != null
+				& req.getParameter("amount") != null) {
+			String property = req.getParameter("property");
+			if ("deposit".equals(property)) {
+				String accountNumber = req.getParameter("accountnumber");
+				double amount = Double.parseDouble(req.getParameter("amount"));
+				if (accountNumber.length() != 16) {
+					out.println("AccountNumber must be 16 digits");
+					return;
+				}
+				if (req.getSession().getAttribute("username") != null) {
+					try {
+						if (BankAccount.deposit(accountNumber, amount))
+							out.println("You have depositted " + amount);
+					} catch (Exception e) {
+						out.print("Error has happened,Please try later");
+					}
+				} else
+					out.println("Session timeout. Please login");
+			}
+
+			if ("debit".equals(property)) {
+				String accountNumber = req.getParameter("accountnumber");
+				double amount = Double.parseDouble(req.getParameter("amount"));
+				if (accountNumber.length() != 16) {
+					out.println("AccountNumber must be 16 digits");
+					return;
+				}
+				if (req.getSession().getAttribute("username") != null) {
+					try {
+						if (BankAccount.debit(accountNumber, amount))
+							out.println("You have debitted " + amount);
+						else
+							out.println("Insufficient balance or System error");
+					} catch (Exception e) {
+						out.print("Error has happened,Please try later");
+					}
+				} else
+					out.println("Session timeout. Please login");
+			}
+
+		} else
+			out.println("Please check your parameters");
+
+	}
+
+	/**
+	 * Delete the product entity
+	 */
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String userkey = req.getParameter("username");
+		PrintWriter out = resp.getWriter();
+		try {
+			out.println(Customer.deleteCustomer(userkey));
+		} catch (Exception e) {
+			out.println(JsonUtil.getErrorMessage(e));
+		}
+	}
+
+	protected void doQuery(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String property = req.getParameter("property");
+		PrintWriter out = resp.getWriter();
+
+		if ("balance".equalsIgnoreCase(property)) {
+			if (req.getSession().getAttribute("username") != null) {
+				String accountNumber = req.getParameter("accountnumber");
+				// out.println(userName);
+				try {
+					out.println("$" + BankAccount.getBalance(accountNumber));
+				} catch (Exception e) {
+					out.println("We can't get your balance");
+				}
+			} else
+				out.println("Your session is time out. Please log in again");
+		}
+
+		if ("transaction".equalsIgnoreCase(property)) {
+			if (req.getParameter("accountnumber")!=null&&req.getParameter("start")!=null&&req.getParameter("end")!=null) {
+				String accountNumber = req.getParameter("accountnumber");
+				String start = req.getParameter("start");
+				String end = req.getParameter("end");
+				String actiontype = "";
+				if(req.getParameter("actiontype")!=null)
+					actiontype = req.getParameter("actiontype");
+				// out.println(userName);
+				try {
+				out.println(new SimpleDateFormat("MM/dd/yyyy").parse(start).toString());
+			//		out.println(end);
+					Iterable<Entity> logs = TransactionLog
+							.getLogsForBankAccount(accountNumber, actiontype, start, end);
+					int count = 0;
+					String action;
+					String description;
+					boolean result;
+					String transactiontime;
+					for (Entity log : logs) {
+						action = (String) log.getProperty("action");
+						description = (String) log.getProperty("description");
+						result = (Boolean) log.getProperty("result");
+						transactiontime = (String) log
+								.getProperty("transactiontime");
+						out.println("<tr><td>" 
+								+accountNumber+"</td><td>"
+								+ action + "</td><td>" 
+								+ description+ "</td><td>" 
+								+ result+"</td><td>"
+								+ transactiontime+"</td></tr>");
+						count++;
+					}
+					if (count == 0)
+						out.println("<tr><td colspan='5'>No Result</td></tr>");
+				} catch (Exception e) {
+					out.println("<tr><td colspan='5'>"+e.getMessage()+"</td></tr>");
+				}
+			} else
+				out.println("<tr><td colspan='5'>Please check your paramters.</td></tr>");
+		}
+
+	}
+
+	/**
+	 * Redirect the call to doDelete or doPut method
+	 */
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		String action = req.getParameter("action");
+		if ("".equals(action) || action == null) {
+			out.println("Need action paramter");
+			return;
+		}
+		if (action.equalsIgnoreCase("delete")) {
+			doDelete(req, resp);
+			return;
+		} else if (action.equalsIgnoreCase("create")) {
+			doCreate(req, resp);
+			return;
+		} else if (action.equalsIgnoreCase("update")) {
+			doUpdate(req, resp);
+			return;
+		} else if (action.equalsIgnoreCase("query")) {
+			doQuery(req, resp);
+			return;
+		}
+	}
+
+}

@@ -17,6 +17,11 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>BankAccountServlet</servlet-name>
+		<servlet-class> edu.udel.tpic.server.BankAccountServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class> edu.udel.tpic.server.LoginServlet</servlet-class>
 	</servlet>
@@ -25,6 +30,8 @@
 		<servlet-name>ProductServlet</servlet-name>
 		<servlet-class> edu.udel.tpic.server.ProductServlet</servlet-class>
 	</servlet>
+  
+  
   
     <servlet>
     <servlet-name>entiryOperation</servlet-name>
@@ -39,6 +46,11 @@
   <servlet-mapping>
 		<servlet-name>ProductServlet</servlet-name>
 		<url-pattern>/product</url-pattern>
+	</servlet-mapping>
+	
+	  <servlet-mapping>
+		<servlet-name>BankAccountServlet</servlet-name>
+		<url-pattern>/bankaccount</url-pattern>
 	</servlet-mapping>
   
     <servlet-mapping>
