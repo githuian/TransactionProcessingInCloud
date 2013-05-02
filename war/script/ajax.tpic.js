@@ -79,16 +79,19 @@ var login= function()
 		},
 		success:function(data) {
 			 var $response=$(data);
-			if($response.filter('#login').text()=="success"){
+			 var repdata = $response.filter('#login-message').text().split(";");
+			if(repdata[0]=="success"){
 			$('div#loginmessage').show();
+		 	$('div#loginmessage').html("<p><b>Welcome,"+repdata[2]+"</b></p>");
 			$('a.controltab').show();
 			$('div#login-div').hide();
 			$('#userLogin').val('');
+			$('#logout').show();
 			$('#pswLogin').val('');
 			$('#session-username').val(username);
 			}
 			else {			
-				$('div#loginmessage').html("<p><font color=red>The username or password is not correct.</p><p>Please try again.</font></p>");		
+				$('div#loginmessage').html("<p>"+repdata[1]+"</p>");		
 				$('#userLogin').val('');
 				$('#pswLogin').val('');
 			}
@@ -132,13 +135,7 @@ var logout = function()
 var getAccounts = function()
 {
 	var parameter=new Array();
-//	var username =$('#session-username').val();
-//	if(username==""){
-//		alert("Timeout,Please login again");
-//		showTab(HOME);
-//		return;
-//	}
-	parameter[parameter.length]=new param('property','accountnumber');
+	parameter[parameter.length]=new param('property','accountnumbers');
 	parameter[parameter.length]=new param('action','query');
 	$.ajax({
 		url : "/customer",

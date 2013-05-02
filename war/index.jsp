@@ -12,28 +12,23 @@
  <!--  <script language="javascript" src='script/ajax.util.js'></script> -->
   <script language="javascript" src='script/ajax.tpic.js'></script>
     <script language="javascript" src='script/jquery-ui-1.10.2.custom.min.js'></script>
-
 </head>
 
 <%
-String fullName = "";
+
 String userName = "";
 if(session.getAttribute("username") != null)
 {
 	userName = (String) session.getAttribute("username");
-    fullName = session.getAttribute("firstname") +" " + session.getAttribute("lastname");
+	if("admin".equalsIgnoreCase(userName)) session.invalidate();
 }
 %>
 <body>
 <input type="text" value="<%=userName%>" id="session-username" hidden name="session-username" />
   <!-- content -->  
   <div  id="gc-pagecontent" >
- <div><div> <h1 class="page_title">The Bank on the Cloud(Ordinary user)</h1></div><div id ="logout" style="float:right">
- <%
-if(session.getAttribute("username") != null){
-out.println("<a href='#' onClick='logout();'>Logout</a>");
-}
- %></div></div>
+ <div><div> <h1 class="page_title">The Bank on the Cloud(Ordinary user)</h1></div>
+ <div id ="logout" style="float:right"><a href="#" onClick="logout();">Logout</a></div></div>
  <!-- tabs --> 
  <div id="tabs" class="gtb">
       <a id="home" href="#home" class="tab">Home</a>	   
@@ -56,7 +51,7 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 <input type="reset" name="Reset" value="Reset"/>
 </form>
 </div>
-  <div id="loginmessage"><b>Welcome <%=fullName%></b></div>
+  <div id="loginmessage"></div>
    </div>  
 
   
@@ -73,7 +68,7 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 		 </tr>
 		<tr>
            <td>Balance</td>
-           <td><input type="text" readonly style="width: 185px;" autocomplete="off" class="gsc-input" maxlength="50" name="balance-amount" id="balance-amount" /></td>
+           <td><input type="text" readonly="readonly" style="width: 185px;" autocomplete="off" class="gsc-input" maxlength="50" name="balance-amount" id="balance-amount" /></td>
          </tr>
         <tr>
           <td>&nbsp;</td>
@@ -189,20 +184,23 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 <script type="text/javascript">
 
 <% 
-if(session.getAttribute("username")!=null)
+if(session.getAttribute("username")!=null&&!"".equalsIgnoreCase((String)session.getAttribute("username")))
 {
+String	fullName = session.getAttribute("firstname") +" " + session.getAttribute("lastname");
+out.println("$('div#loginmessage').html(\"Welcome,"+fullName+"\");");
 	out.println("$('div#login-div').hide();");
     out.println("$('div#loginmessage').show();");
     out.println("$('.controltab').show();");
+    out.println("$('#logout').show();");
 }
 else 
 {
 out.println("$('div#login-div').show();");
 out.println("$('div#loginmessage').hide();");
 out.println("$('.controltab').hide();");
+out.println("$('#logout').hide();");
 }
 %>
-
  $(window).load(function () {
    init();
 });

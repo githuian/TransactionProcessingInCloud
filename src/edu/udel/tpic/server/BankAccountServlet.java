@@ -49,35 +49,33 @@ public class BankAccountServlet extends HttpServlet {
 	 */
 	protected void doCreate(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		logger.log(Level.INFO, "Creating Product");
 		PrintWriter out = resp.getWriter();
-		if (req.getParameter("accountnumber") != null
-				& req.getParameter("initbalance") != null) {
+		if (req.getParameter("accountnumber") != null & req.getParameter("username") != null
+				& req.getParameter("initamount") != null) {	
+			String userName = req.getParameter("username");
 			String accountNumber = req.getParameter("accountnumber");
 			double initBalance = Double.parseDouble(req
-					.getParameter("initbalance"));
-			if (accountNumber.length() != 16) {
-				out.println("AccountNumber must be 16 digits");
-				return;
-			}
-			if (req.getSession().getAttribute("username") != null) {
-				String userName = (String) req.getSession().getAttribute(
-						"username");
-				if ("admin".equalsIgnoreCase(userName))
-					userName = req.getParameter("username");
+					.getParameter("initamount"));
+			String seesionName = (String) req.getSession().getAttribute("username");
+			if (seesionName!= null && "admin".equalsIgnoreCase(seesionName)) {
 				try {
+				if(Customer.getCustomer(userName)!=null){	
 					if (BankAccount.createAccount(userName, accountNumber,
 							initBalance))
-						out.println("true:success");
-					else out.println("false:repeatedAccount");
+						out.println("<p id=\"create-account-message\">success;Your account has been created</p>");
+					else 
+						out.println("<p id=\"create-account-message\">fail;Account exists</p>");
+				}
+				else
+				out.println("<p id=\"create-account-message\">fail;Customer not exists</p>");
 				} catch (Exception e) 
 				{
-					out.print("false:exception");
+					out.print("<p id=\"create-account-message\">fail;"+e.getMessage()+"</p>");
 				}
 			} else
-				out.println("false:session timeout");
+				out.println("<p id=\"create-account-message\">fail;admin session timeout</p>");
 		} else{
-			out.println("false:Please check your parameters");
+			out.println("<p id=\"create-account-message\">fail;Please check your parameters</p>");
 		}
 	}
 
@@ -136,13 +134,24 @@ public class BankAccountServlet extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String userkey = req.getParameter("username");
+		String accountNumber = req.getParameter("accountnumber");
 		PrintWriter out = resp.getWriter();
+		String seesionName = (String) req.getSession().getAttribute("username");
+		if (seesionName != null && "admin".equalsIgnoreCase(seesionName)) {
+	    if(BankAccount.getSingleBankAccount(accountNumber)!=null){		
 		try {
-			out.println(Customer.deleteCustomer(userkey));
+			if(BankAccount.deleteBankAccount(accountNumber))
+				out.println("<p id=\"delete-account-message\">success;This account has been deleted</p>");	
+			else
+				out.println("<p id=\"delete-account-message\">fail;inner error</p>");
 		} catch (Exception e) {
-			out.println(JsonUtil.getErrorMessage(e));
+			out.println("<p id=\"delete-account-message\">fail;"+e.getMessage()+"</p>");
 		}
+	    }
+	    else out.println("<p id=\"delete-account-message\">fail;Account not exists</p>");
+		}
+		else 
+			out.println("<p id=\"delete-account-message\">fail;Please login as admin</p>");
 	}
 
 	protected void doQuery(HttpServletRequest req, HttpServletResponse resp)

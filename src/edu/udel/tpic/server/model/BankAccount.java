@@ -59,8 +59,6 @@ public class BankAccount {
 		} finally {
 			if (txn.isActive()) {
 				txn.rollback();
-			//	TransactionLog.createlog(accountNumber, "createaccount",
-			//			"create action rollback", false);
 				return false;
 			} else {
 				EntityDAO.addToCache(key, account);
@@ -173,26 +171,19 @@ public class BankAccount {
 
 	public static boolean deleteBankAccount(String accountNumber) {
 		Transaction txn = datastore.beginTransaction();
-		double balance = getBalance(accountNumber);
-		if (balance > 0)
-			return false;
-		if (balance < 0)
-			return false;
-		if (balance == 0) {
 			logger.log(Level.INFO, "Deleting BankAccount");
-			Key key = KeyFactory.createKey("Customer", accountNumber);
+			Entity account = getSingleBankAccount(accountNumber);
 			try {
-				datastore.delete(key);
+				datastore.delete(account.getKey());
 				txn.commit();
 			} finally {
 				if (txn.isActive()) {
 					txn.rollback();
 					return false;
 				} else {
-					EntityDAO.deleteFromCache(key);
+					EntityDAO.deleteFromCache(account.getKey());
 				}
 			}
-		}
 		return true;
 	}
 

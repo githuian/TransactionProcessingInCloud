@@ -44,7 +44,6 @@ public class LoginServlet extends HttpServlet{
 			String fullName ="";
 			Entity cardHolder = Customer.getCustomer(userName);
 			PrintWriter out = resp.getWriter();
-			Entity loginResponse = new Entity("loginreponse");
 			if(cardHolder!=null && passWord.equals(cardHolder.getProperty("passWord")))
 			{
 				HttpSession session = req.getSession();
@@ -53,20 +52,15 @@ public class LoginServlet extends HttpServlet{
 				session.setAttribute("lastname", cardHolder.getProperty("lastName"));
 				fullName = cardHolder.getProperty("firstName")+" " +cardHolder.getProperty("lastName");
 				if("admin".equalsIgnoreCase(userName))
-				out.println("<p id=\"login\">success:admin:"+fullName+"</p>");
+				out.println("<p id=\"login-message\">success;admin;"+fullName+"</p>");
 				else
-					out.println("<p id=\"login\">success:ordinary:"+fullName+"</p>");
+					out.println("<p id=\"login-message\">success;ordinary;"+fullName+"</p>");
 			}
 			else{
-				out.println("<p id=\"login\">fail:The username or password is not correct</p>");
+				out.println("<p id=\"login-message\">fail;The username or password is not correct;</p>");
 			}
 			out.flush();	 
 	 }
-	
-	
-	
-	
-	
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			   throws ServletException, IOException {

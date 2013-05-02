@@ -130,14 +130,22 @@ public class Customer {
 		    PreparedQuery pq = datastore.prepare(query);
 		    return pq.asIterable();	
 	}
+	
+	
 
 	public static boolean deleteCustomer(String userName) {
 		logger.log(Level.INFO, "Deleting customer");
 		Transaction txn = datastore.beginTransaction();
 		Key key = KeyFactory.createKey("Customer", userName);
-		List<Entity> accounts = (List<Entity>) BankAccount
+		Iterable<Entity> accounts =  BankAccount
 				.getAccountsForCustomer(userName);
-		if (!accounts.isEmpty()) {
+		Iterator it = accounts.iterator();
+		int count = 0;
+		while(it.hasNext()){
+			it.next();
+			count ++;
+		}
+		if (count !=0) {
 			return false;
 		}
 		try {

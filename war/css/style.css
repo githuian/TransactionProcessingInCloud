@@ -8,3 +8,12 @@ display:none;
 margin-top: 50px;	
 font-size:large;
 }
+.create-user-row{
+width:20%;	
+}
+.create-user-items{
+width:80%;	
+}
+#logout{
+	display:none;
+}
