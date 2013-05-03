@@ -8,27 +8,36 @@
  <link href="http://code.google.com/css/codesite.pack.04102009.css" rel="stylesheet" type="text/css" />
  <link href= "css/style.css" rel="stylesheet" type="text/css" />
  <link href= "css/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
-  <script language="javascript" src='script/jquery-1.8.js'></script>
+ <script language="javascript" src='script/jquery-1.8.js'></script>
  <!--  <script language="javascript" src='script/ajax.util.js'></script> -->
   <script language="javascript" src='script/ajax.tpic.js'></script>
     <script language="javascript" src='script/jquery-ui-1.10.2.custom.min.js'></script>
 </head>
-
 <%
-
 String userName = "";
 if(session.getAttribute("username") != null)
 {
 	userName = (String) session.getAttribute("username");
-	if("admin".equalsIgnoreCase(userName)) session.invalidate();
+	if("admin".equalsIgnoreCase(userName)) 
+	{
+		session.setAttribute("username", "");
+		session.setAttribute("firstname", "");
+		session.setAttribute("lastname", "");
+	}
 }
 %>
 <body>
-<input type="text" value="<%=userName%>" id="session-username" hidden name="session-username" />
   <!-- content -->  
-  <div  id="gc-pagecontent" >
- <div><div> <h1 class="page_title">The Bank on the Cloud(Ordinary user)</h1></div>
- <div id ="logout" style="float:right"><a href="#" onClick="logout();">Logout</a></div></div>
+ <div  id="gc-pagecontent" >
+ <div>
+ <div>
+ <h1 class="page_title">The Bank on the Cloud(Ordinary user)</h1>
+ </div>
+ <div style="float:right">
+ <span id ="logout" style="margin:20px;"><a href="#" onClick="logout();">Logout</a></span>
+ <span ><a href="admin.jsp">Admin page</a></span>
+ </div>
+ </div>
  <!-- tabs --> 
  <div id="tabs" class="gtb">
       <a id="home" href="#home" class="tab">Home</a>	   
@@ -51,10 +60,8 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 <input type="reset" name="Reset" value="Reset"/>
 </form>
 </div>
-  <div id="loginmessage"></div>
-   </div>  
-
-  
+<div id="loginmessage"></div>
+</div>   
    <!-- ******************************************* product ******************************************* -->
   <div class="g-unit" id="balance-tab">
   	<!-- balance container --> 
@@ -80,7 +87,6 @@ PassWord: <input name="pswLogin" type="password" id="pswLogin" value=""/><br>
 	  	</tbody>
   </table>
   </form>
-
   </div>
   
   

@@ -48,12 +48,7 @@ public class CustomerServlet extends HttpServlet {
 	protected void doCreate(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		logger.log(Level.INFO, "Creating Product");
-		PrintWriter out = resp.getWriter();
-		// if(req.getParameter("username")==null||req.getParameter("secnumber")==null||req.getParameter("password")==null
-		// ||req.getParameter("lastname") ==null
-		// ||req.getParameter("firstname")==null||req.getParameter("address")==null
-		// ||req.getParameter("phonenumber")==null||req.getParameter("email")==null
-		// ){
+		PrintWriter out = resp.getWriter();	
 		String userName = req.getParameter("username");
 		String secNumber = req.getParameter("secnumber");
 		String passWord = req.getParameter("password");
@@ -62,9 +57,10 @@ public class CustomerServlet extends HttpServlet {
 		String address = req.getParameter("address");
 		String phoneNumber = req.getParameter("phonenumber");
 		String email = req.getParameter("email");
+		String postcode = req.getParameter("postcode");
 		try {
 			if (Customer.createCustomer(userName, passWord, secNumber,
-					firstName, lastName, address, phoneNumber, email))
+					firstName, lastName, address, phoneNumber, email,postcode))
 				out.println("<p id=\"create-user-message\">success;</p>");
 			else
 				out.println("<p id=\"create-user-message\">fail;User exists or inner error</p>");
@@ -72,27 +68,6 @@ public class CustomerServlet extends HttpServlet {
 			out.print("<p id=\"create-user-message\">fail;" + e.getMessage()
 					+ "</p>");
 		}
-		// }
-		// else{
-		// if( req.getParameter("username")==null)
-		// out.println("<p id=\"create-user-message\">1fail;Please check parameters</p>");
-		// if(req.getParameter("secnumber")==null)
-		// out.println("<p id=\"create-user-message\">2fail;Please check parameters</p>");
-		// if(req.getParameter("password")==null)
-		// out.println("<p id=\"create-user-message\">3fail;Please check parameters</p>");
-		// if(req.getParameter("lastname") ==null )
-		// out.println("<p id=\"create-user-message\">4fail;Please check parameters</p>");
-		// if( req.getParameter("firstname")==null)
-		// out.println("<p id=\"create-user-message\">5fail;Please check parameters</p>");
-		// if( req.getParameter("address")==null)
-		// out.println("<p id=\"create-user-message\">6fail;Please check parameters</p>");
-		// if( req.getParameter("phonenumber")==null)
-		// out.println("<p id=\"create-user-message\">7fail;Please check parameters</p>");
-		// if(req.getParameter("email")==null)
-		// out.println("<p id=\"create-user-message\">8fail;Please check parameters</p>");
-		// out.println("<p id=\"create-user-message\">fail;Please check parameters</p>");
-
-		// }
 	}
 
 	protected void doUpdate(HttpServletRequest req, HttpServletResponse resp)
@@ -108,7 +83,8 @@ public class CustomerServlet extends HttpServlet {
 					|| req.getParameter("firstname") == null
 					|| req.getParameter("address") == null
 					|| req.getParameter("phonenumber") == null
-					|| req.getParameter("email") == null) {
+					|| req.getParameter("email") == null
+					|| req.getParameter("postcode") == null) {
 				String userName = req.getParameter("username");
 				String secNumber = req.getParameter("secnumber");
 				String passWord = req.getParameter("password");
@@ -117,9 +93,10 @@ public class CustomerServlet extends HttpServlet {
 				String address = req.getParameter("address");
 				String phoneNumber = req.getParameter("phonenumber");
 				String email = req.getParameter("email");
+				String postcode = req.getParameter("postcode");
 				try {
 					if (Customer.updateCustomer(userName, passWord, secNumber,
-							firstName, lastName, address, phoneNumber, email)) {
+							firstName, lastName, address, phoneNumber, email,postcode)) {
 						out.println("<p id=\"create-user-message\">success;</p>");
 					}
 				} catch (Exception e) {
@@ -182,9 +159,9 @@ public class CustomerServlet extends HttpServlet {
 						count++;
 					}
 					if (count == 0)
-						out.println("<option>No accounts under this user</option>");
+						out.println("<option>No bankaccount associcated with this customer</option>");
 				} catch (Exception e) {
-					out.println("<option>No accounts under this user</option>");
+					out.println("<option>Inner error</option>");
 				}
 			} else
 				out.println("<option>Your session is timeout</option>");

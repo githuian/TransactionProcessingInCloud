@@ -35,7 +35,7 @@ public class Customer {
 
 	public static boolean createCustomer(String userName, String passWord,
 			String secNumber, String firstName, String lastName,
-			String address, String phoneNumber, String email) {
+			String address, String phoneNumber, String email,String postCode) {
 		Entity cutomer = getCustomer(userName);
 		Date date = new Date();
 		if (cutomer == null) {
@@ -49,6 +49,7 @@ public class Customer {
 			cutomer.setProperty("address", address);
 			cutomer.setProperty("phoneNumber", phoneNumber);
 			cutomer.setProperty("email", email);
+			cutomer.setProperty("postCode", postCode);
 			cutomer.setProperty("createdDate", dateFormat.format(date));
 		} else {
 			return false;
@@ -73,7 +74,7 @@ public class Customer {
 
 	public static boolean updateCustomer(String userName, String passWord,
 			String secNumber, String firstName, String lastName,
-			String address, String phoneNumber, String email) {
+			String address, String phoneNumber, String email,String postCode) {
 		Entity cutomer = getCustomer(userName);
 		Date date = new Date();
 		if (cutomer == null) {
@@ -95,6 +96,8 @@ public class Customer {
 				cutomer.setProperty("phoneNumber", phoneNumber);
 			if (userName != null && !"".equals(email))
 				cutomer.setProperty("email", email);
+			if (userName != null && !"".equals(postCode))
+				cutomer.setProperty("postCode", postCode);
 			cutomer.setProperty("updatedDate", dateFormat.format(date));
 		}
 
@@ -131,8 +134,6 @@ public class Customer {
 		    return pq.asIterable();	
 	}
 	
-	
-
 	public static boolean deleteCustomer(String userName) {
 		logger.log(Level.INFO, "Deleting customer");
 		Transaction txn = datastore.beginTransaction();

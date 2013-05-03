@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee                http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>edu.udel.tpic.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-	<servlet>
-		<servlet-name>ItemServlet</servlet-name>
-		<servlet-class> edu.udel.tpic.server.ItemServlet</servlet-class>
-	</servlet>
 	
 		<servlet>
 		<servlet-name>CustomerServlet</servlet-name>
@@ -26,26 +17,14 @@
 		<servlet-class> edu.udel.tpic.server.LoginServlet</servlet-class>
 	</servlet>
   
-  	<servlet>
-		<servlet-name>ProductServlet</servlet-name>
-		<servlet-class> edu.udel.tpic.server.ProductServlet</servlet-class>
-	</servlet>
-  
-  
-  
-    <servlet>
-    <servlet-name>entiryOperation</servlet-name>
-    <servlet-class>edu.udel.tpic.server.soap.EntitySOAPServlet</servlet-class>
+      <servlet>
+    <servlet-name>BankServlet</servlet-name>
+    <servlet-class>edu.udel.tpic.server.soap.BankSOAPServlet</servlet-class>
   </servlet>
   
-  <servlet>
-    <servlet-name>helloSOAPServerServlet</servlet-name>
-    <servlet-class>edu.udel.tpic.server.soap.HelloSOAPServerServlet</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-		<servlet-name>ProductServlet</servlet-name>
-		<url-pattern>/product</url-pattern>
+	  <servlet-mapping>
+		<servlet-name>BankServlet</servlet-name>
+		<url-pattern>/banking</url-pattern>
 	</servlet-mapping>
 	
 	  <servlet-mapping>
@@ -63,25 +42,6 @@
 		<url-pattern>/customer</url-pattern>
 	</servlet-mapping>
   
-    <servlet-mapping>
-		<servlet-name>ItemServlet</servlet-name>
-		<url-pattern>/item</url-pattern>
-	</servlet-mapping>
-  
-   <servlet-mapping>
-    <servlet-name>entiryOperation</servlet-name>
-    <url-pattern>/entity</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>helloSOAPServerServlet</servlet-name>
-    <url-pattern>/hellosoapserver</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/transactionprocessingincloud/greet</url-pattern>
-  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

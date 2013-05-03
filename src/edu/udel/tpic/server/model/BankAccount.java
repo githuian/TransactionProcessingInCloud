@@ -69,6 +69,7 @@ public class BankAccount {
 	}
 
 	public static double getBalance(String accountNumber) {
+		logger.log(Level.INFO, "get balance");
 		double balance = -1;
 		Entity account = getSingleBankAccount(accountNumber);
 		if (account != null) {

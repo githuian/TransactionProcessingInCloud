@@ -67,6 +67,11 @@ var login= function()
 	var parameter=new Array();
     var username =$('#userLogin').val();
     var password =$('#pswLogin').val();
+    if(username.length==0||password.length==0){
+    	$('div#loginmessage').html("User name or password is null");	
+    	$('div#loginmessage').show();
+    	return;
+    }
 	parameter[parameter.length]=new param('username',username);
 	parameter[parameter.length]=new param('password',password);
 	parameter[parameter.length]=new param('action','login');
@@ -88,7 +93,6 @@ var login= function()
 			$('#userLogin').val('');
 			$('#logout').show();
 			$('#pswLogin').val('');
-			$('#session-username').val(username);
 			}
 			else {			
 				$('div#loginmessage').html("<p>"+repdata[1]+"</p>");		
@@ -161,12 +165,6 @@ var getBalance = function()
 {	
 	var accountnumber =$('#balance-accounts-list').val();
 	var parameter=new Array();
-//var username =$('#session-username').val();
-//	if(username==""){
-	//	alert("Timeout,Please login again");
-//		showTab(HOME);
-//		return;
-//	}
 	parameter[parameter.length]=new param('accountnumber',accountnumber);
 	parameter[parameter.length]=new param('property','balance');
 	parameter[parameter.length]=new param('action','query');
@@ -222,7 +220,7 @@ var setDebit = function()
 	var accountnumber = $('#debit-accounts-list').val();
 	var debitamount = $('#debit-amount').val();
 	var parameter=new Array();
-	var username =$('#session-username').val();
+//	var username =$('#session-username').val();
 	parameter[parameter.length]=new param('accountnumber',accountnumber);
 	parameter[parameter.length]=new param('property','debit');
 	parameter[parameter.length]=new param('amount',debitamount);

@@ -45,18 +45,21 @@ public class TransactionLog {
 	}
 
 	public static Iterable<Entity> getLogsForBankAccount(String accountNumber,
-			String actiontype, String start, String end) throws ParseException {
+			String actiontype, String start, String end) {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Key ancestorKey = KeyFactory.createKey("BankAccount", accountNumber);	
 		Query query = new Query("Log");		
 		Filter finalFilter;	
-		
+		Filter startdate = null ;
 		Filter accountMatch = new FilterPredicate("accountNumber",
 					FilterOperator.EQUAL, accountNumber);
-		
-	Filter startdate = new FilterPredicate("transactiontime",
+		try{
+	      startdate = new FilterPredicate("transactiontime",
 				FilterOperator.GREATER_THAN_OR_EQUAL, new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(start+" 00:00:00"));
-		
+		}
+		catch(Exception e){
+			return null;
+		}
 	//Filter enddate = new FilterPredicate("transactiontime",
 	//		FilterOperator.LESS_THAN_OR_EQUAL, new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(end+" 00:00:00"));			
 		

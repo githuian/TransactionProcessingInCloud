@@ -20,15 +20,23 @@ if(session.getAttribute("username") != null)
 {
 	userName = (String) session.getAttribute("username");
 	if(!"admin".equalsIgnoreCase(userName))
-		session.invalidate();
-    
+		{
+		session.setAttribute("username", "");
+		session.setAttribute("firstname", "");
+		session.setAttribute("lastname", "");
+		}
 }
 %>
 <body>
   <!-- content -->  
   <div  id="gc-pagecontent" >
- <div><div> <h1 class="page_title">The Bank on the Cloud (Administration user)</h1></div>
- <div id ="logout" style="float:right"><a href="#" onClick="logout();">Logout</a></div></div>
+ <div>
+ <div> <h1 class="page_title">The Bank on the Cloud (Administration user)</h1> </div>
+ <div style="float:right">
+ <span id ="logout" style="margin:20px;"><a href="#" onClick="logout();">Logout</a></span>
+ <span ><a href="index.jsp">Home page</a></span>
+ </div>
+ </div>
  <!-- tabs --> 
  <div id="tabs" class="gtb">
       <a id="home" href="#home" class="tab">Home</a>	   
